@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <title>Pintu</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!--  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">-->
+  <link href="css/materials-icon.css" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
+  <link rel="icon" href="img/favicon.png">
+</head>
+<body>
+
+<div class="container" id="app">
+  <img src="img/pintu_logo_text.png" alt="Pintu" style="margin-top: 5px" class="responsive-img">
+
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card hoverable">
+        <div class="card-content center">
+          <div class="chip z-depth-1">
+            <img src="img/btc.webp" alt="Bitcoin">Bitcoin
+          </div>
+        </div>
+        <div class="card-action center">
+          <button @click="openPintu" class="btn-flat green waves-effect">Beli: {{btc.buy|fmtNumber}}</button>
+          <button @click="openPintu" class="btn-flat red waves-effect">Jual: {{btc.sell|fmtNumber}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col s12 m6">
+      <div class="card hoverable">
+        <div class="card-content center">
+          <div class="chip z-depth-1">
+            <img src="img/eth.webp" alt="Ethereum">Ethereum
+          </div>
+        </div>
+        <div class="card-action center">
+          <button @click="openPintu" class="btn-flat green waves-effect">Beli: {{eth.buy|fmtNumber}}</button>
+          <button @click="openPintu" class="btn-flat red waves-effect">Jual: {{eth.sell|fmtNumber}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card hoverable">
+        <div class="card-content center">
+          <div class="chip z-depth-1">
+            <img src="img/bnb.webp" alt="Binance Coin">Binance Coin
+          </div>
+        </div>
+        <div class="card-action center">
+          <button @click="openPintu" class="btn-flat green waves-effect">Beli: {{bnb.buy|fmtNumber}}</button>
+          <button @click="openPintu" class="btn-flat red waves-effect">Jual: {{bnb.sell|fmtNumber}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col s12 m6">
+      <div class="card hoverable">
+        <div class="card-content center">
+          <div class="chip z-depth-1">
+            <img src="img/link.webp" alt="Chainlink">Chainlink
+          </div>
+        </div>
+        <div class="card-action center">
+          <button @click="openPintu" class="btn-flat green waves-effect">Beli: {{link.buy|fmtNumber}}</button>
+          <button @click="openPintu" class="btn-flat red waves-effect">Jual: {{link.sell|fmtNumber}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card hoverable">
+        <div class="card-content center">
+          <div class="chip z-depth-1">
+            <img src="img/snx.webp" alt="Synthetix">Synthetix
+          </div>
+        </div>
+        <div class="card-action center">
+          <button @click="openPintu" class="btn-flat green waves-effect">Beli: {{snx.buy|fmtNumber}}</button>
+          <button @click="openPintu" class="btn-flat red waves-effect">Jual: {{snx.sell|fmtNumber}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col s12 m6">
+      <div class="card hoverable">
+        <div class="card-content center">
+          <div class="chip z-depth-1">
+            <img src="img/comp.webp" alt="Compound">Compound
+          </div>
+        </div>
+        <div class="card-action center">
+          <button @click="openPintu" class="btn-flat green waves-effect">Beli: {{comp.buy|fmtNumber}}</button>
+          <button @click="openPintu" class="btn-flat red waves-effect">Jual: {{comp.sell|fmtNumber}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row center">
+    <div class="chip hoverable z-depth-1" @click="contact" style="cursor: pointer">
+      <img src="img/favicon.png" alt="jajanjawa">@jajanjawa
+    </div>
+  </div>
+</div>
+<script src="js/materialize.min.js"></script>
+<script src="js/vue.min.js"></script>
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      server: 'https://api.pintukripto.com',
+      btc: {},
+      eth: {},
+      bnb: {},
+      link: {},
+      snx: {},
+      comp: {}
+    },
+    mounted() {
+      this.fetchPrice('BTC').then(price => this.btc = price);
+      this.fetchPrice('ETH').then(price => this.eth = price);
+      this.fetchPrice('BNB').then(price => this.bnb = price);
+      this.fetchPrice('LINK').then(price => this.link = price);
+      this.fetchPrice('SNX').then(price => this.snx = price);
+      this.fetchPrice('COMP').then(price => this.comp = price);
+    },
+    methods: {
+      async fetchPrice(symbol) {
+        let buy = fetch(`${this.server}/v1/trade/price/buy/${symbol}`);
+        let sell = fetch(`${this.server}/v1/trade/price/sell/${symbol}`);
+        let res = await Promise.all([buy, sell]);
+        let price = {buy: 0, sell: 0};
+        if (res[0].ok) {
+          let data = await res[0].json();
+          price.buy = parseInt(data.payload.price.close);
+        }
+        if (res[1].ok) {
+          let data = await res[1].json();
+          price.sell = parseInt(data.payload.price.close);
+        }
+        return price;
+      },
+      openPintu() {
+        window.open('pintu://', '_self');
+      },
+      contact() {
+        this.copyText('@jajanjawa');
+        M.toast({
+          html: 'disalin', displayLength: 1700, completeCallback: () => {
+            window.open('pintu://', '_self');
+          }
+        });
+      },
+      copyText(text) {
+        let textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        textArea.remove();
+      },
+    },
+    filters: {
+      fmtNumber(value) {
+        if (value === undefined) return '0';
+        return value.toLocaleString();
+      }
+    }
+  });
+</script>
+</body>
+</html>
