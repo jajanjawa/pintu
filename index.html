@@ -1,177 +1,279 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <title>Pintu</title>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <!--  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">-->
-  <link href="css/materials-icon.css" rel="stylesheet">
-  <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
-  <link rel="icon" href="img/favicon.png">
+    <title>Pintu</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="css/materials-icon.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
+    <link rel="icon" href="img/favicon.png">
 </head>
 <body>
 
 <div class="container" id="app">
-  <img src="img/pintu_logo_text.png" alt="Pintu" style="margin-top: 5px" class="responsive-img">
+    <img src="img/pintu_logo_text.png" alt="Pintu" style="margin-top: 5px" class="responsive-img">
 
-  <div class="row">
-    <div class="col s12 m6">
-      <div class="card hoverable">
-        <div class="card-content center">
-          <div class="chip z-depth-1">
-            <img src="img/btc.webp" alt="Bitcoin">Bitcoin
-          </div>
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card hoverable">
+                <div class="card-content center">
+                    <div class="chip z-depth-1 waves-effect" @click="refresh('btc')" style="cursor: pointer"
+                         title="segarkan">
+                        <img src="img/btc.webp" alt="Bitcoin">Bitcoin {{btc.diff}}
+                    </div>
+                    <table class="striped highlight">
+                        <tbody>
+                        <tr @click="priceHighLow('btc','day')" style="cursor: pointer">
+                            <td>Hari</td>
+                            <td>
+                                <span class="green-text">{{btc.day.high|fmtNumber}}</span> | <span class="red-text">{{btc.day.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        <tr @click="priceHighLow('btc','week')" style="cursor: pointer">
+                            <td>Minggu</td>
+                            <td>
+                                <span class="green-text">{{btc.week.high|fmtNumber}}</span> | <span class="red-text">{{btc.week.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        <tr @click="priceHighLow('btc','month')" style="cursor: pointer">
+                            <td>Bulan</td>
+                            <td>
+                                <span class="green-text">{{btc.month.high|fmtNumber}}</span> | <span class="red-text">{{btc.month.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-action center">
+                    <div class="chip green waves-effect" @click="openPintu" style="cursor: pointer">Beli:
+                        {{btc.price.buy|fmtNumber}}
+                    </div>
+                    <div class="chip red waves-effect" @click="openPintu" style="cursor: pointer">Jual:
+                        {{btc.price.sell|fmtNumber}}
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-action center">
-          <button @click="openPintu" class="btn-flat green waves-effect">Beli: {{btc.buy|fmtNumber}}</button>
-          <button @click="openPintu" class="btn-flat red waves-effect">Jual: {{btc.sell|fmtNumber}}</button>
+        <div class="col s12 m6">
+            <div class="card hoverable">
+                <div class="card-content center">
+                    <div class="chip z-depth-1 waves-effect" @click="refresh('eth')" style="cursor: pointer"
+                         title="segarkan">
+                        <img src="img/eth.webp" alt="Ethereum">Ethereum {{eth.diff}}
+                    </div>
+                    <table class="striped highlight">
+                        <tbody>
+                        <tr @click="priceHighLow('eth','day')" style="cursor: pointer">
+                            <td>Hari</td>
+                            <td>
+                                <span class="green-text">{{eth.day.high|fmtNumber}}</span> | <span class="red-text">{{eth.day.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        <tr @click="priceHighLow('eth','week')" style="cursor: pointer">
+                            <td>Minggu</td>
+                            <td>
+                                <span class="green-text">{{eth.week.high|fmtNumber}}</span> | <span class="red-text">{{eth.week.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        <tr @click="priceHighLow('eth','month')" style="cursor: pointer">
+                            <td>Bulan</td>
+                            <td>
+                                <span class="green-text">{{eth.month.high|fmtNumber}}</span> | <span class="red-text">{{eth.month.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-action center">
+                    <div class="chip green waves-effect" @click="openPintu" style="cursor: pointer">Beli:
+                        {{eth.price.buy|fmtNumber}}
+                    </div>
+                    <div class="chip red waves-effect" @click="openPintu" style="cursor: pointer">Jual:
+                        {{eth.price.sell|fmtNumber}}
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-    <div class="col s12 m6">
-      <div class="card hoverable">
-        <div class="card-content center">
-          <div class="chip z-depth-1">
-            <img src="img/eth.webp" alt="Ethereum">Ethereum
-          </div>
-        </div>
-        <div class="card-action center">
-          <button @click="openPintu" class="btn-flat green waves-effect">Beli: {{eth.buy|fmtNumber}}</button>
-          <button @click="openPintu" class="btn-flat red waves-effect">Jual: {{eth.sell|fmtNumber}}</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col s12 m6">
-      <div class="card hoverable">
-        <div class="card-content center">
-          <div class="chip z-depth-1">
-            <img src="img/bnb.webp" alt="Binance Coin">Binance Coin
-          </div>
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card hoverable">
+                <div class="card-content center">
+                    <div class="chip z-depth-1 waves-effect" @click="refresh('bnb')" style="cursor: pointer"
+                         title="segarkan">
+                        <img src="img/bnb.webp" alt="Binance Coin">Binance Coin {{bnb.diff}}
+                    </div>
+                    <table class="striped highlight">
+                        <tbody>
+                        <tr @click="priceHighLow('bnb','day')" style="cursor: pointer">
+                            <td>Hari</td>
+                            <td>
+                                <span class="green-text">{{bnb.day.high|fmtNumber}}</span> | <span class="red-text">{{bnb.day.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        <tr @click="priceHighLow('bnb','week')" style="cursor: pointer">
+                            <td>Minggu</td>
+                            <td>
+                                <span class="green-text">{{bnb.week.high|fmtNumber}}</span> | <span class="red-text">{{bnb.week.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        <tr @click="priceHighLow('bnb','month')" style="cursor: pointer">
+                            <td>Bulan</td>
+                            <td>
+                                <span class="green-text">{{bnb.month.high|fmtNumber}}</span> | <span class="red-text">{{bnb.month.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-action center">
+                    <div class="chip green waves-effect" @click="openPintu" style="cursor: pointer">Beli:
+                        {{bnb.price.buy|fmtNumber}}
+                    </div>
+                    <div class="chip red waves-effect" @click="openPintu" style="cursor: pointer">Jual:
+                        {{bnb.price.sell|fmtNumber}}
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-action center">
-          <button @click="openPintu" class="btn-flat green waves-effect">Beli: {{bnb.buy|fmtNumber}}</button>
-          <button @click="openPintu" class="btn-flat red waves-effect">Jual: {{bnb.sell|fmtNumber}}</button>
+        <div class="col s12 m6">
+            <div class="card hoverable">
+                <div class="card-content center">
+                    <div class="chip z-depth-1 waves-effect" @click="refresh('link')" style="cursor: pointer"
+                         title="segarkan">
+                        <img src="img/link.webp" alt="Chainlink">Chainlink {{link.diff}}
+                    </div>
+                    <table class="striped highlight">
+                        <tbody>
+                        <tr @click="priceHighLow('link','day')" style="cursor: pointer">
+                            <td>Hari</td>
+                            <td>
+                                <span class="green-text">{{link.day.high|fmtNumber}}</span> | <span class="red-text">{{link.day.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        <tr @click="priceHighLow('link','week')" style="cursor: pointer">
+                            <td>Minggu</td>
+                            <td>
+                                <span class="green-text">{{link.week.high|fmtNumber}}</span> | <span class="red-text">{{link.week.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        <tr @click="priceHighLow('link','month')" style="cursor: pointer">
+                            <td>Bulan</td>
+                            <td>
+                                <span class="green-text">{{link.month.high|fmtNumber}}</span> | <span class="red-text">{{link.month.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-action center">
+                    <div class="chip green waves-effect" @click="openPintu" style="cursor: pointer">Beli:
+                        {{link.price.buy|fmtNumber}}
+                    </div>
+                    <div class="chip red waves-effect" @click="openPintu" style="cursor: pointer">Jual:
+                        {{link.price.sell|fmtNumber}}
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-    <div class="col s12 m6">
-      <div class="card hoverable">
-        <div class="card-content center">
-          <div class="chip z-depth-1">
-            <img src="img/link.webp" alt="Chainlink">Chainlink
-          </div>
-        </div>
-        <div class="card-action center">
-          <button @click="openPintu" class="btn-flat green waves-effect">Beli: {{link.buy|fmtNumber}}</button>
-          <button @click="openPintu" class="btn-flat red waves-effect">Jual: {{link.sell|fmtNumber}}</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col s12 m6">
-      <div class="card hoverable">
-        <div class="card-content center">
-          <div class="chip z-depth-1">
-            <img src="img/snx.webp" alt="Synthetix">Synthetix
-          </div>
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card hoverable">
+                <div class="card-content center">
+                    <div class="chip z-depth-1 waves-effect" @click="refresh('snx')" style="cursor: pointer"
+                         title="segarkan">
+                        <img src="img/snx.webp" alt="Synthetix">Synthetix {{snx.diff}}
+                    </div>
+                    <table class="striped highlight">
+                        <tbody>
+                        <tr @click="priceHighLow('snx','day')" style="cursor: pointer">
+                            <td>Hari</td>
+                            <td>
+                                <span class="green-text">{{snx.day.high|fmtNumber}}</span> | <span class="red-text">{{snx.day.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        <tr @click="priceHighLow('snx','week')" style="cursor: pointer">
+                            <td>Minggu</td>
+                            <td>
+                                <span class="green-text">{{snx.week.high|fmtNumber}}</span> | <span class="red-text">{{snx.week.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        <tr @click="priceHighLow('snx','month')" style="cursor: pointer">
+                            <td>Bulan</td>
+                            <td>
+                                <span class="green-text">{{snx.month.high|fmtNumber}}</span> | <span class="red-text">{{snx.month.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-action center">
+                    <div class="chip green waves-effect" @click="openPintu" style="cursor: pointer">Beli:
+                        {{snx.price.buy|fmtNumber}}
+                    </div>
+                    <div class="chip red waves-effect" @click="openPintu" style="cursor: pointer">Jual:
+                        {{snx.price.sell|fmtNumber}}
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-action center">
-          <button @click="openPintu" class="btn-flat green waves-effect">Beli: {{snx.buy|fmtNumber}}</button>
-          <button @click="openPintu" class="btn-flat red waves-effect">Jual: {{snx.sell|fmtNumber}}</button>
+        <div class="col s12 m6">
+            <div class="card hoverable">
+                <div class="card-content center">
+                    <div class="chip z-depth-1 waves-effect" @click="refresh('comp')" style="cursor: pointer"
+                         title="segarkan">
+                        <img src="img/comp.webp" alt="Compound">Compound {{comp.diff}}
+                    </div>
+                    <table class="striped highlight">
+                        <tbody>
+                        <tr @click="priceHighLow('comp','day')" style="cursor: pointer">
+                            <td>Hari</td>
+                            <td>
+                                <span class="green-text">{{comp.day.high|fmtNumber}}</span> | <span class="red-text">{{comp.day.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        <tr @click="priceHighLow('comp','week')" style="cursor: pointer">
+                            <td>Minggu</td>
+                            <td>
+                                <span class="green-text">{{comp.week.high|fmtNumber}}</span> | <span class="red-text">{{comp.week.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        <tr @click="priceHighLow('comp','month')" style="cursor: pointer">
+                            <td>Bulan</td>
+                            <td>
+                                <span class="green-text">{{comp.month.high|fmtNumber}}</span> | <span class="red-text">{{comp.month.low|fmtNumber}}</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-action center">
+                    <div class="chip green waves-effect" @click="openPintu" style="cursor: pointer">Beli:
+                        {{comp.price.buy|fmtNumber}}
+                    </div>
+                    <div class="chip red waves-effect" @click="openPintu" style="cursor: pointer">Jual:
+                        {{comp.price.sell|fmtNumber}}
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-    <div class="col s12 m6">
-      <div class="card hoverable">
-        <div class="card-content center">
-          <div class="chip z-depth-1">
-            <img src="img/comp.webp" alt="Compound">Compound
-          </div>
-        </div>
-        <div class="card-action center">
-          <button @click="openPintu" class="btn-flat green waves-effect">Beli: {{comp.buy|fmtNumber}}</button>
-          <button @click="openPintu" class="btn-flat red waves-effect">Jual: {{comp.sell|fmtNumber}}</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="row center">
-    <div class="chip hoverable z-depth-1" @click="contact" style="cursor: pointer">
-      <img src="img/favicon.png" alt="jajanjawa">@jajanjawa
+    <div class="row center">
+        <div class="chip hoverable z-depth-1" @click="contact" style="cursor: pointer">
+            <img src="img/favicon.png" alt="jajanjawa">@jajanjawa
+        </div>
+        <br>
+        <div class="chip hoverable z-depth-1" @click="invite" style="cursor: pointer">
+            <img src="img/favicon.png" alt="Undangan">Kode Undangan: EXPLO190
+        </div>
     </div>
-  </div>
 </div>
 <script src="js/materialize.min.js"></script>
 <script src="js/vue.min.js"></script>
-<script>
-  new Vue({
-    el: '#app',
-    data: {
-      server: 'https://api.pintukripto.com',
-      btc: {},
-      eth: {},
-      bnb: {},
-      link: {},
-      snx: {},
-      comp: {}
-    },
-    mounted() {
-      this.fetchPrice('BTC').then(price => this.btc = price);
-      this.fetchPrice('ETH').then(price => this.eth = price);
-      this.fetchPrice('BNB').then(price => this.bnb = price);
-      this.fetchPrice('LINK').then(price => this.link = price);
-      this.fetchPrice('SNX').then(price => this.snx = price);
-      this.fetchPrice('COMP').then(price => this.comp = price);
-    },
-    methods: {
-      async fetchPrice(symbol) {
-        let buy = fetch(`${this.server}/v1/trade/price/buy/${symbol}`);
-        let sell = fetch(`${this.server}/v1/trade/price/sell/${symbol}`);
-        let res = await Promise.all([buy, sell]);
-        let price = {buy: 0, sell: 0};
-        if (res[0].ok) {
-          let data = await res[0].json();
-          price.buy = parseInt(data.payload.price.close);
-        }
-        if (res[1].ok) {
-          let data = await res[1].json();
-          price.sell = parseInt(data.payload.price.close);
-        }
-        return price;
-      },
-      openPintu() {
-        window.open('pintu://', '_self');
-      },
-      contact() {
-        this.copyText('@jajanjawa');
-        M.toast({
-          html: 'disalin', displayLength: 1700, completeCallback: () => {
-            window.open('pintu://', '_self');
-          }
-        });
-      },
-      copyText(text) {
-        let textArea = document.createElement("textarea");
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        textArea.remove();
-      },
-    },
-    filters: {
-      fmtNumber(value) {
-        if (value === undefined) return '0';
-        return value.toLocaleString();
-      }
-    }
-  });
-</script>
+<script src="js/pintu.js"></script>
 </body>
 </html>
