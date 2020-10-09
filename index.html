@@ -13,267 +13,274 @@
 <div class="container" id="app">
     <img src="img/pintu_logo_text.png" alt="Pintu" style="margin-top: 5px" class="responsive-img">
 
-    <div class="row">
-        <div class="col s12 m6">
-            <div class="card hoverable">
-                <div class="card-content center">
-                    <div class="chip z-depth-1 waves-effect" @click="refresh('btc')" style="cursor: pointer"
-                         title="segarkan">
-                        <img src="img/btc.webp" alt="Bitcoin">Bitcoin {{btc.diff}}
-                    </div>
-                    <table class="striped highlight">
-                        <tbody>
-                        <tr @click="priceHighLow('btc','day')" style="cursor: pointer">
-                            <td>Hari</td>
-                            <td>
-                                <span class="green-text">{{btc.day.high|fmtNumber}}</span> | <span class="red-text">{{btc.day.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        <tr @click="priceHighLow('btc','week')" style="cursor: pointer">
-                            <td>Minggu</td>
-                            <td>
-                                <span class="green-text">{{btc.week.high|fmtNumber}}</span> | <span class="red-text">{{btc.week.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        <tr @click="priceHighLow('btc','month')" style="cursor: pointer">
-                            <td>Bulan</td>
-                            <td>
-                                <span class="green-text">{{btc.month.high|fmtNumber}}</span> | <span class="red-text">{{btc.month.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-action center">
-                    <div class="chip green waves-effect" @click="openPintu" style="cursor: pointer">Beli:
-                        {{btc.price.buy|fmtNumber}}
-                    </div>
-                    <div class="chip red waves-effect" @click="openPintu" style="cursor: pointer">Jual:
-                        {{btc.price.sell|fmtNumber}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col s12 m6">
-            <div class="card hoverable">
-                <div class="card-content center">
-                    <div class="chip z-depth-1 waves-effect" @click="refresh('eth')" style="cursor: pointer"
-                         title="segarkan">
-                        <img src="img/eth.webp" alt="Ethereum">Ethereum {{eth.diff}}
-                    </div>
-                    <table class="striped highlight">
-                        <tbody>
-                        <tr @click="priceHighLow('eth','day')" style="cursor: pointer">
-                            <td>Hari</td>
-                            <td>
-                                <span class="green-text">{{eth.day.high|fmtNumber}}</span> | <span class="red-text">{{eth.day.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        <tr @click="priceHighLow('eth','week')" style="cursor: pointer">
-                            <td>Minggu</td>
-                            <td>
-                                <span class="green-text">{{eth.week.high|fmtNumber}}</span> | <span class="red-text">{{eth.week.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        <tr @click="priceHighLow('eth','month')" style="cursor: pointer">
-                            <td>Bulan</td>
-                            <td>
-                                <span class="green-text">{{eth.month.high|fmtNumber}}</span> | <span class="red-text">{{eth.month.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-action center">
-                    <div class="chip green waves-effect" @click="openPintu" style="cursor: pointer">Beli:
-                        {{eth.price.buy|fmtNumber}}
-                    </div>
-                    <div class="chip red waves-effect" @click="openPintu" style="cursor: pointer">Jual:
-                        {{eth.price.sell|fmtNumber}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col s12 m6">
-            <div class="card hoverable">
-                <div class="card-content center">
-                    <div class="chip z-depth-1 waves-effect" @click="refresh('bnb')" style="cursor: pointer"
-                         title="segarkan">
-                        <img src="img/bnb.webp" alt="Binance Coin">Binance Coin {{bnb.diff}}
-                    </div>
-                    <table class="striped highlight">
-                        <tbody>
-                        <tr @click="priceHighLow('bnb','day')" style="cursor: pointer">
-                            <td>Hari</td>
-                            <td>
-                                <span class="green-text">{{bnb.day.high|fmtNumber}}</span> | <span class="red-text">{{bnb.day.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        <tr @click="priceHighLow('bnb','week')" style="cursor: pointer">
-                            <td>Minggu</td>
-                            <td>
-                                <span class="green-text">{{bnb.week.high|fmtNumber}}</span> | <span class="red-text">{{bnb.week.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        <tr @click="priceHighLow('bnb','month')" style="cursor: pointer">
-                            <td>Bulan</td>
-                            <td>
-                                <span class="green-text">{{bnb.month.high|fmtNumber}}</span> | <span class="red-text">{{bnb.month.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-action center">
-                    <div class="chip green waves-effect" @click="openPintu" style="cursor: pointer">Beli:
-                        {{bnb.price.buy|fmtNumber}}
-                    </div>
-                    <div class="chip red waves-effect" @click="openPintu" style="cursor: pointer">Jual:
-                        {{bnb.price.sell|fmtNumber}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col s12 m6">
-            <div class="card hoverable">
-                <div class="card-content center">
-                    <div class="chip z-depth-1 waves-effect" @click="refresh('link')" style="cursor: pointer"
-                         title="segarkan">
-                        <img src="img/link.webp" alt="Chainlink">Chainlink {{link.diff}}
-                    </div>
-                    <table class="striped highlight">
-                        <tbody>
-                        <tr @click="priceHighLow('link','day')" style="cursor: pointer">
-                            <td>Hari</td>
-                            <td>
-                                <span class="green-text">{{link.day.high|fmtNumber}}</span> | <span class="red-text">{{link.day.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        <tr @click="priceHighLow('link','week')" style="cursor: pointer">
-                            <td>Minggu</td>
-                            <td>
-                                <span class="green-text">{{link.week.high|fmtNumber}}</span> | <span class="red-text">{{link.week.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        <tr @click="priceHighLow('link','month')" style="cursor: pointer">
-                            <td>Bulan</td>
-                            <td>
-                                <span class="green-text">{{link.month.high|fmtNumber}}</span> | <span class="red-text">{{link.month.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-action center">
-                    <div class="chip green waves-effect" @click="openPintu" style="cursor: pointer">Beli:
-                        {{link.price.buy|fmtNumber}}
-                    </div>
-                    <div class="chip red waves-effect" @click="openPintu" style="cursor: pointer">Jual:
-                        {{link.price.sell|fmtNumber}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col s12 m6">
-            <div class="card hoverable">
-                <div class="card-content center">
-                    <div class="chip z-depth-1 waves-effect" @click="refresh('snx')" style="cursor: pointer"
-                         title="segarkan">
-                        <img src="img/snx.webp" alt="Synthetix">Synthetix {{snx.diff}}
-                    </div>
-                    <table class="striped highlight">
-                        <tbody>
-                        <tr @click="priceHighLow('snx','day')" style="cursor: pointer">
-                            <td>Hari</td>
-                            <td>
-                                <span class="green-text">{{snx.day.high|fmtNumber}}</span> | <span class="red-text">{{snx.day.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        <tr @click="priceHighLow('snx','week')" style="cursor: pointer">
-                            <td>Minggu</td>
-                            <td>
-                                <span class="green-text">{{snx.week.high|fmtNumber}}</span> | <span class="red-text">{{snx.week.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        <tr @click="priceHighLow('snx','month')" style="cursor: pointer">
-                            <td>Bulan</td>
-                            <td>
-                                <span class="green-text">{{snx.month.high|fmtNumber}}</span> | <span class="red-text">{{snx.month.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-action center">
-                    <div class="chip green waves-effect" @click="openPintu" style="cursor: pointer">Beli:
-                        {{snx.price.buy|fmtNumber}}
-                    </div>
-                    <div class="chip red waves-effect" @click="openPintu" style="cursor: pointer">Jual:
-                        {{snx.price.sell|fmtNumber}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col s12 m6">
-            <div class="card hoverable">
-                <div class="card-content center">
-                    <div class="chip z-depth-1 waves-effect" @click="refresh('comp')" style="cursor: pointer"
-                         title="segarkan">
-                        <img src="img/comp.webp" alt="Compound">Compound {{comp.diff}}
-                    </div>
-                    <table class="striped highlight">
-                        <tbody>
-                        <tr @click="priceHighLow('comp','day')" style="cursor: pointer">
-                            <td>Hari</td>
-                            <td>
-                                <span class="green-text">{{comp.day.high|fmtNumber}}</span> | <span class="red-text">{{comp.day.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        <tr @click="priceHighLow('comp','week')" style="cursor: pointer">
-                            <td>Minggu</td>
-                            <td>
-                                <span class="green-text">{{comp.week.high|fmtNumber}}</span> | <span class="red-text">{{comp.week.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        <tr @click="priceHighLow('comp','month')" style="cursor: pointer">
-                            <td>Bulan</td>
-                            <td>
-                                <span class="green-text">{{comp.month.high|fmtNumber}}</span> | <span class="red-text">{{comp.month.low|fmtNumber}}</span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-action center">
-                    <div class="chip green waves-effect" @click="openPintu" style="cursor: pointer">Beli:
-                        {{comp.price.buy|fmtNumber}}
-                    </div>
-                    <div class="chip red waves-effect" @click="openPintu" style="cursor: pointer">Jual:
-                        {{comp.price.sell|fmtNumber}}
-                    </div>
-                </div>
-            </div>
+    <div class="row center">
+        <div v-for="(it,index) in coinChips" :key="index" class="chip hoverable z-depth-1 waves-effect waves-ripple"
+             :class="selectedColor(it)" @click="pick(it)" style="cursor: pointer">
+            <img :src="it.icon" :alt="it.name">{{it.name}}
         </div>
     </div>
 
     <div class="row center">
-        <div class="chip hoverable z-depth-1" @click="contact" style="cursor: pointer">
+        <!-- trending -->
+        <table class="striped highlight centered">
+            <tbody>
+            <tr>
+                <td class="waves-effect waves-ripple" @click="priceHour(selectedChip.symbol)" style="cursor: pointer">
+                    Jam<br>
+                    <span :class="trendingColor(price.hour.dir)">{{price.hour.change|fmtPercent}}</span>
+                </td>
+                <td class="waves-effect waves-ripple" @click="priceDay(selectedChip.symbol)" style="cursor: pointer">
+                    Hari<br>
+                    <span :class="trendingColor(price.day.dir)">{{price.day.change|fmtPercent}}</span>
+                </td>
+                <td class="waves-effect waves-ripple" @click="priceTimelapse(selectedChip.symbol, 'week')"
+                    style="cursor: pointer">
+                    Minggu<br>
+                    <span :class="trendingColor(price.week.dir)">{{price.week.change|fmtPercent}}</span>
+                </td>
+                <td class="waves-effect waves-ripple" @click="priceTimelapse(selectedChip.symbol, 'month')"
+                    style="cursor: pointer">
+                    Bulan<br>
+                    <span :class="trendingColor(price.month.dir)">{{price.month.change|fmtPercent}}</span>
+                </td>
+                <td class="waves-effect waves-ripple" @click="priceTimelapse(selectedChip.symbol, 'year')"
+                    style="cursor: pointer">
+                    Tahun<br>
+                    <span :class="trendingColor(price.year.dir)">{{price.year.change|fmtPercent}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!-- tinggi dan rendah -->
+        <table class="centered striped highlight">
+            <tbody>
+            <tr>
+                <td>Hari</td>
+                <td class="green-text">{{price.day.high|fmtNumber}}</td>
+                <td class="red-text">{{price.day.low|fmtNumber}}</td>
+            </tr>
+            <tr>
+                <td>Minggu</td>
+                <td class="green-text">{{price.week.high|fmtNumber}}</td>
+                <td class="red-text">{{price.week.low|fmtNumber}}</td>
+            </tr>
+            <tr>
+                <td>Bulan</td>
+                <td class="green-text">{{price.month.high|fmtNumber}}</td>
+                <td class="red-text">{{price.month.low|fmtNumber}}</td>
+            </tr>
+            <tr>
+                <td>Year</td>
+                <td class="green-text">{{price.year.high|fmtNumber}}</td>
+                <td class="red-text">{{price.year.low|fmtNumber}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <!-- harga beli dan jual -->
+        <div class="col s6">
+            <div class="chip green z-depth-1 hoverable waves-effect waves-ripple" @click="refreshPrice"
+                 style="cursor: pointer">Beli: {{price.buy|fmtNumber}}
+            </div>
+        </div>
+        <div class="col s6">
+            <div class="chip red z-depth-1 hoverable waves-effect waves-ripple" @click="refreshPrice"
+                 style="cursor: pointer">Jual: {{price.sell|fmtNumber}}
+            </div>
+        </div>
+    </div>
+
+    <!-- kontak -->
+    <div class="row center">
+        <div class="chip hoverable z-depth-1 waves-effect waves-ripple" @click="contact" style="cursor: pointer">
             <img src="img/favicon.png" alt="jajanjawa">@jajanjawa
         </div>
         <br>
-        <div class="chip hoverable z-depth-1" @click="invite" style="cursor: pointer">
+        <div class="chip hoverable z-depth-1 waves-effect waves-ripple" @click="invite" style="cursor: pointer">
             <img src="img/favicon.png" alt="Undangan">Kode Undangan: EXPLO190
         </div>
+        <br>
+        <div class="chip hoverable z-depth-1 waves-effect waves-ripple" style="cursor: pointer" @click="openApp">
+            <img src="img/favicon.png" alt="Pintu">Buka Pintu
+        </div>
     </div>
+
+    <div id="confirm" class="modal">
+        <div class="modal-content">
+            apa kamu yakin untuk buka <span class="green-text">Pintu</span> ?
+        </div>
+        <div class="modal-footer">
+            <a href="pintu://" class="modal-close waves-effect waves-green btn-flat">Ya</a>
+            <a href="#!" class="modal-close waves-effect waves-red btn-flat">Tidak</a>
+        </div>
+    </div>
+
 </div>
 <script src="js/materialize.min.js"></script>
-<script src="js/vue.min.js"></script>
-<script src="js/pintu.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/api.js"></script>
+<script>
+    function copyText(text) {
+        let textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        textArea.remove();
+    }
+
+    function initPrice() {
+        return {
+            buy: 0, sell: 0, hour: {}, day: {}, week: {}, month: {}, year: {}
+        };
+    }
+
+    let coinChips = [
+        {icon: 'img/btc.webp', name: 'Bitcoin', symbol: 'btc', selected: true},
+        {icon: 'img/eth.webp', name: 'Ethereum', symbol: 'eth'},
+        {icon: 'img/bnb.webp', name: 'Binance Coin', symbol: 'bnb'},
+        {icon: 'img/link.webp', name: 'Chainlink', symbol: 'link'},
+        {icon: 'img/snx.webp', name: 'Synthetix', symbol: 'snx'},
+        {icon: 'img/comp.webp', name: 'Compound', symbol: 'comp'},
+    ]
+    new Vue({
+        el: '#app',
+        data: {
+            coinChips,
+            coin: '',
+            selectedChip: coinChips[0],
+            price: initPrice()
+        },
+        mounted() {
+            this.modal = M.Modal.init(document.querySelector('.modal'));
+            this.loadData('btc');
+        },
+        computed: {},
+        methods: {
+            pick(chip) {
+                if (this.selectedChip) {
+                    this.$set(this.selectedChip, 'selected', false);
+                    this.price = initPrice();
+                }
+
+                this.$set(chip, 'selected', true);
+                this.selectedChip = chip;
+
+                this.loadData(chip.symbol);
+                // baca harga beli dan jual
+                fetchPrice(chip.symbol).then(price => {
+                    this.$set(this.price, 'buy', price.buy);
+                    this.$set(this.price, 'sell', price.sell);
+                    this.saveCoin(chip.symbol);
+                });
+            },
+            loadData(symbol) {
+                let data = localStorage.getItem(symbol);
+                if (data) {
+                    this.price = Object.assign(this.price, JSON.parse(data));
+                }
+            },
+            selectedColor(chip) {
+                if (chip.selected) return 'green lighten-1';
+                return '';
+            },
+            trendingColor(dir) {
+                if (dir > 0) {
+                    return 'green-text';
+                } else if (dir < 0) {
+                    return 'red-text';
+                } else return '';
+            },
+            contact() {
+                copyText('@jajanjawa');
+                M.toast({html: 'username disalin', displayLength: 1700});
+            },
+            invite() {
+                copyText('EXPLO190');
+                M.toast({html: 'kode undangan disalin', displayLength: 1700});
+            },
+            openApp() {
+                this.modal.open();
+            },
+            refreshPrice() {
+                fetchPrice(this.selectedChip.symbol).then(price => {
+                    this.$set(this.price, 'buy', price.buy);
+                    this.$set(this.price, 'sell', price.sell);
+                    this.saveCoin(this.selectedChip.symbol);
+                });
+            },
+            async priceHour(symbol) {
+                let now = await fetchRate(symbol);
+                let latestPrice = now.close;
+                let block = now.block - 3600;
+                let rateAgo = await fetchRate(symbol, block);
+                let price = rateAgo.close;
+                // perubahan dalam persen
+                let change = calcPriceChange(latestPrice, price);
+                let dir = change > 0 ? 1 : -1;
+
+                this.$set(this.price.hour, 'change', change);
+                this.$set(this.price.hour, 'dir', dir);
+                this.saveCoin(symbol);
+            },
+            async priceDay(symbol) {
+                let chart = await fetchChart(symbol, 'day');
+                let block = chart[0].block - 86400;
+                let result = await fetchRate(symbol, block);
+                let price = result.close;
+                // perubahan dalam persen
+                let latestPrice = chart[0].close;
+                let change = calcPriceChange(latestPrice, price);
+                let dir = change > 0 ? 1 : -1;
+                // harga tinggi dan rendah
+                let hl = getHighLow(chart);
+
+                this.$set(this.price.day, 'change', change);
+                this.$set(this.price.day, 'dir', dir);
+                this.$set(this.price.day, 'high', hl.high);
+                this.$set(this.price.day, 'low', hl.low);
+
+                this.saveCoin(symbol);
+            },
+            /**
+             *
+             * @param symbol
+             * @param time week,month,year
+             * @returns {Promise<void>}
+             */
+            async priceTimelapse(symbol, time) {
+                let chart = await fetchChart(symbol, time);
+                let latestPrice = chart[0].close;
+                let timePrice = chart[chart.length - 1].close;
+                let change = calcPriceChange(latestPrice, timePrice);
+                let dir = change > 0 ? 1 : -1;
+                // harga tinggi dan rendah
+                let hl = getHighLow(chart);
+
+                this.$set(this.price[time], 'change', change);
+                this.$set(this.price[time], 'dir', dir);
+                this.$set(this.price[time], 'high', hl.high);
+                this.$set(this.price[time], 'low', hl.low);
+                this.saveCoin(symbol);
+            },
+            saveCoin(symbol) {
+                localStorage.setItem(symbol, JSON.stringify(this.price));
+            }
+        },
+        filters: {
+            fmtNumber(value) {
+                if (value === undefined) return '0';
+                if (typeof value === "string") {
+                    value = parseInt(value);
+                }
+                return value.toLocaleString();
+            },
+            fmtPercent(value) {
+                if (value === undefined) return '0%';
+                return value.toFixed(2) + '%';
+            }
+        }
+
+    });
+</script>
 </body>
 </html>
