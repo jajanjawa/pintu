@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Pintu</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="css/materials-icon.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
+    <link rel="icon" href="img/favicon.png">
+</head>
+<body>
+
+<div class="container" id="app">
+    <img src="img/pintu_logo_text.png" alt="Pintu" style="margin-top: 5px" class="responsive-img">
+
+    <div class="row">
+        <div v-for="(it,index) in coins" :key="index" class="col s12 l6 center">
+            <div class="chip z-depth-1">
+                <img :src="it.icon" :alt="it.name">{{it.name}}
+            </div>
+            <br>
+            <!-- trending -->
+            <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer"
+                 @click="priceHour(it.symbol)">
+                Jam: <span :class="trendingColor(prices[it.symbol].hour.change)">{{prices[it.symbol].hour.change|fmtPercent}}</span>
+            </div>
+            <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer"
+                 @click="priceDay(it.symbol)">
+                Hari: <span :class="trendingColor(prices[it.symbol].day.change)">{{prices[it.symbol].day.change|fmtPercent}}</span>
+            </div>
+            <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer"
+                 @click="priceTimelapse(it.symbol, 'week')">
+                Minggu: <span :class="trendingColor(prices[it.symbol].week.change)">{{prices[it.symbol].week.change|fmtPercent}}</span>
+            </div>
+            <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer"
+                 @click="priceTimelapse(it.symbol, 'month')">
+                Bulan: <span :class="trendingColor(prices[it.symbol].month.change)">{{prices[it.symbol].month.change|fmtPercent}}</span>
+            </div>
+            <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer"
+                 @click="priceTimelapse(it.symbol, 'year')">
+                Tahun: <span :class="trendingColor(prices[it.symbol].year.change)">{{prices[it.symbol].year.change|fmtPercent}}</span>
+            </div>
+
+            <!-- tinggi dan rendah -->
+            <table class="striped highlight">
+                <tbody>
+                <tr>
+                    <td>Jam</td>
+                    <td class="green-text">{{prices[it.symbol].hour.high|fmtNumber}}</td>
+                    <td class="red-text">{{prices[it.symbol].hour.low|fmtNumber}}</td>
+                </tr>
+                <tr>
+                    <td>Hari</td>
+                    <td class="green-text">{{prices[it.symbol].day.high|fmtNumber}}</td>
+                    <td class="red-text">{{prices[it.symbol].day.low|fmtNumber}}</td>
+                </tr>
+                <tr>
+                    <td>Minggu</td>
+                    <td class="green-text">{{prices[it.symbol].week.high|fmtNumber}}</td>
+                    <td class="red-text">{{prices[it.symbol].week.low|fmtNumber}}</td>
+                </tr>
+                <tr>
+                    <td>Bulan</td>
+                    <td class="green-text">{{prices[it.symbol].month.high|fmtNumber}}</td>
+                    <td class="red-text">{{prices[it.symbol].month.low|fmtNumber}}</td>
+                </tr>
+                <tr>
+                    <td>Tahun</td>
+                    <td class="green-text">{{prices[it.symbol].year.high|fmtNumber}}</td>
+                    <td class="red-text">{{prices[it.symbol].year.low|fmtNumber}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- harga beli dan jual -->
+            <div class="chip green lighten-1 z-depth-1 hoverable waves-effect waves-ripple"
+                 @click="refreshPrice(it.symbol)"
+                 style="cursor: pointer">Beli: {{prices[it.symbol].buy|fmtNumber}}
+            </div>
+            <div class="chip red lighten-1 z-depth-1 hoverable waves-effect waves-ripple"
+                 @click="refreshPrice(it.symbol)"
+                 style="cursor: pointer">Jual: {{prices[it.symbol].sell|fmtNumber}}
+            </div>
+            <p></p>
+        </div>
+    </div>
+
+    <!-- kontak -->
+    <div class="row center">
+        <div class="chip hoverable z-depth-1 waves-effect waves-ripple" @click="contact" style="cursor: pointer">
+            <img src="img/favicon.png" alt="jajanjawa">@jajanjawa
+        </div>
+        <br>
+        <div class="chip hoverable z-depth-1 waves-effect waves-ripple" @click="invite" style="cursor: pointer">
+            <img src="img/favicon.png" alt="Undangan">Kode Undangan: EXPLO190
+        </div>
+    </div>
+
+    <div class="fixed-action-btn">
+        <a href="index.html" class="btn btn-large btn-floating green lighten-1"><i class="material-icons">smartphone</i></a>
+    </div>
+
+</div>
+<script src="js/materialize.min.js"></script>
+<script src="js/vue.min.js"></script>
+<script src="js/api.js"></script>
+<script>
+    function copyText(text) {
+        let textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        textArea.remove();
+    }
+
+    function initPrice() {
+        return {
+            buy: 0, sell: 0, hour: {}, day: {}, week: {}, month: {}, year: {}
+        };
+    }
+    let coins = [
+        {icon: 'img/btc.webp', name: 'Bitcoin', symbol: 'btc'},
+        {icon: 'img/eth.webp', name: 'Ethereum', symbol: 'eth'},
+        {icon: 'img/bnb.webp', name: 'Binance Coin', symbol: 'bnb'},
+        {icon: 'img/link.webp', name: 'Chainlink', symbol: 'link'},
+        {icon: 'img/snx.webp', name: 'Synthetix', symbol: 'snx'},
+        {icon: 'img/comp.webp', name: 'Compound', symbol: 'comp'},
+        {icon: 'img/usdt.webp', name: 'Tether', symbol: 'usdt'}
+    ];
+    let prices = {};
+    for (const coin of coins) {
+        prices[coin.symbol] = initPrice();
+    }
+
+    new Vue({
+        el: '#app',
+        data: {
+            coins,
+            prices
+        },
+        mounted() {
+            for (const coin of coins) {
+                let data = localStorage.getItem(coin.symbol);
+                if (data) {
+                    this.prices[coin.symbol] = JSON.parse(data);
+                }
+            }
+            this.refreshAllPrices();
+            setInterval(this.refreshAllPrices, 60000);
+        },
+        methods: {
+            refreshAllPrices() {
+                for (const coin of coins) {
+                    this.refreshPrice(coin.symbol);
+                }
+            },
+            trendingColor(change) {
+                if (change > 0) {
+                    return 'green-text';
+                } else if (change < 0) {
+                    return 'red-text';
+                } else return '';
+            },
+            contact() {
+                copyText('@jajanjawa');
+                M.toast({html: 'username disalin', displayLength: 1700});
+            },
+            invite() {
+                copyText('EXPLO190');
+                M.toast({html: 'kode undangan disalin', displayLength: 1700});
+            },
+            refreshPrice(symbol) {
+                fetchPrice(symbol).then(price => {
+                    this.$set(this.prices[symbol], 'buy', price.buy);
+                    this.$set(this.prices[symbol], 'sell', price.sell);
+                    this.saveCoin(symbol);
+                });
+            },
+            async priceHour(symbol) {
+                // perubahan dalam persen
+                let now = await fetchRate(symbol);
+                let hourAgo = await fetchRate(symbol, now.block - 3600);
+                let change = calcPriceChange(now.close, hourAgo.close);
+                // harga tinggi dan rendah
+                let chart = await fetchChart(symbol, 'hour');
+                let hl = getHighLow(chart);
+
+                this.$set(this.prices[symbol].hour, 'change', change);
+                this.$set(this.prices[symbol].hour, 'high', hl.high);
+                this.$set(this.prices[symbol].hour, 'low', hl.low);
+
+                this.saveCoin(symbol);
+            },
+            async priceDay(symbol) {
+                // perubahan dalam persen
+                let now = await fetchRate(symbol);
+                let dayAgo = await fetchRate(symbol, now.block - 86400);
+                let change = calcPriceChange(now.close, dayAgo.close);
+                // harga tinggi dan rendah
+                let chart = await fetchChart(symbol, 'day');
+                let hl = getHighLow(chart);
+
+                this.$set(this.prices[symbol].day, 'change', change);
+                this.$set(this.prices[symbol].day, 'high', hl.high);
+                this.$set(this.prices[symbol].day, 'low', hl.low);
+
+                this.saveCoin(symbol);
+            },
+            /**
+             *
+             * @param symbol
+             * @param time week,month,year
+             * @returns {Promise<void>}
+             */
+            async priceTimelapse(symbol, time) {
+                // perubahan dalam persen
+                let chart = await fetchChart(symbol, time);
+                let latestPrice = chart[0].close;
+                let timePrice = chart[chart.length - 1].close;
+                let change = calcPriceChange(latestPrice, timePrice);
+                // harga tinggi dan rendah
+                let hl = getHighLow(chart);
+
+                this.$set(this.prices[symbol][time], 'change', change);
+                this.$set(this.prices[symbol][time], 'high', hl.high);
+                this.$set(this.prices[symbol][time], 'low', hl.low);
+                this.saveCoin(symbol);
+            },
+            saveCoin(symbol) {
+                localStorage.setItem(symbol, JSON.stringify(this.prices[symbol]));
+            }
+        },
+        filters: {
+            fmtNumber(value) {
+                if (value === undefined) return '0';
+                if (typeof value === "string") {
+                    value = parseInt(value);
+                }
+                return value.toLocaleString();
+            },
+            fmtPercent(value) {
+                if (value === undefined || value === null) return '0%';
+                return value.toFixed(2) + '%';
+            }
+        }
+
+    });
+</script>
+</body>
+</html>
