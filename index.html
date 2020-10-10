@@ -69,15 +69,11 @@
             </tbody>
         </table>
         <!-- harga beli dan jual -->
-        <div class="col s6">
-            <div class="chip green lighten-1 z-depth-1 hoverable waves-effect waves-ripple" @click="refreshPrice"
-                 style="cursor: pointer">Beli: {{price.buy|fmtNumber}}
-            </div>
+        <div class="chip green lighten-1 z-depth-1 hoverable waves-effect waves-ripple" @click="refreshPrice"
+             style="cursor: pointer">Beli: {{price.buy|fmtNumber}}
         </div>
-        <div class="col s6">
-            <div class="chip red lighten-1 z-depth-1 hoverable waves-effect waves-ripple" @click="refreshPrice"
-                 style="cursor: pointer">Jual: {{price.sell|fmtNumber}}
-            </div>
+        <div class="chip red lighten-1 z-depth-1 hoverable waves-effect waves-ripple" @click="refreshPrice"
+             style="cursor: pointer">Jual: {{price.sell|fmtNumber}}
         </div>
     </div>
 
@@ -155,6 +151,7 @@
             }
 
             this.modal = M.Modal.init(document.querySelector('.modal'));
+            setInterval(this.refreshPrice, 60000);
         },
         methods: {
             pick(chip) {
@@ -274,7 +271,7 @@
                 return value.toLocaleString();
             },
             fmtPercent(value) {
-                if (value === undefined) return '0%';
+                if (value === undefined || value === null) return '0%';
                 return value.toFixed(2) + '%';
             }
         }
