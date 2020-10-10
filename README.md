@@ -1,3 +1,3 @@
-Pintasan untuk melihat harga beli dan jual di [Pintu](https://jajanjawa.github.io/pintu/)
+Pintasan untuk melihat harga beli dan jual di [Pintu.co.id](https://jajanjawa.github.io/pintu/)
 
 

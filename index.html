@@ -22,38 +22,30 @@
 
     <div class="row center">
         <!-- trending -->
-        <table class="striped highlight centered">
+        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer" @click="priceHour(selectedChip.symbol)">
+            Jam: <span :class="trendingColor(price.hour.change)">{{price.hour.change|fmtPercent}}</span>
+        </div>
+        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer" @click="priceDay(selectedChip.symbol)">
+            Hari: <span :class="trendingColor(price.day.change)">{{price.day.change|fmtPercent}}</span>
+        </div>
+        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer" @click="priceTimelapse(selectedChip.symbol, 'week')">
+            Minggu: <span :class="trendingColor(price.week.change)">{{price.week.change|fmtPercent}}</span>
+        </div>
+        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer" @click="priceTimelapse(selectedChip.symbol, 'month')">
+            Bulan: <span :class="trendingColor(price.month.change)">{{price.month.change|fmtPercent}}</span>
+        </div>
+        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer" @click="priceTimelapse(selectedChip.symbol, 'year')">
+            Tahun: <span :class="trendingColor(price.year.change)">{{price.year.change|fmtPercent}}</span>
+        </div>
+
+        <!-- tinggi dan rendah -->
+        <table class="striped highlight">
             <tbody>
             <tr>
-                <td class="waves-effect waves-ripple" @click="priceHour(selectedChip.symbol)" style="cursor: pointer">
-                    Jam<br>
-                    <span :class="trendingColor(price.hour.dir)">{{price.hour.change|fmtPercent}}</span>
-                </td>
-                <td class="waves-effect waves-ripple" @click="priceDay(selectedChip.symbol)" style="cursor: pointer">
-                    Hari<br>
-                    <span :class="trendingColor(price.day.dir)">{{price.day.change|fmtPercent}}</span>
-                </td>
-                <td class="waves-effect waves-ripple" @click="priceTimelapse(selectedChip.symbol, 'week')"
-                    style="cursor: pointer">
-                    Minggu<br>
-                    <span :class="trendingColor(price.week.dir)">{{price.week.change|fmtPercent}}</span>
-                </td>
-                <td class="waves-effect waves-ripple" @click="priceTimelapse(selectedChip.symbol, 'month')"
-                    style="cursor: pointer">
-                    Bulan<br>
-                    <span :class="trendingColor(price.month.dir)">{{price.month.change|fmtPercent}}</span>
-                </td>
-                <td class="waves-effect waves-ripple" @click="priceTimelapse(selectedChip.symbol, 'year')"
-                    style="cursor: pointer">
-                    Tahun<br>
-                    <span :class="trendingColor(price.year.dir)">{{price.year.change|fmtPercent}}</span>
-                </td>
+                <td>Jam</td>
+                <td class="green-text">{{price.hour.high|fmtNumber}}</td>
+                <td class="red-text">{{price.hour.low|fmtNumber}}</td>
             </tr>
-            </tbody>
-        </table>
-        <!-- tinggi dan rendah -->
-        <table class="centered striped highlight">
-            <tbody>
             <tr>
                 <td>Hari</td>
                 <td class="green-text">{{price.day.high|fmtNumber}}</td>
@@ -70,7 +62,7 @@
                 <td class="red-text">{{price.month.low|fmtNumber}}</td>
             </tr>
             <tr>
-                <td>Year</td>
+                <td>Tahun</td>
                 <td class="green-text">{{price.year.high|fmtNumber}}</td>
                 <td class="red-text">{{price.year.low|fmtNumber}}</td>
             </tr>
@@ -78,12 +70,12 @@
         </table>
         <!-- harga beli dan jual -->
         <div class="col s6">
-            <div class="chip green z-depth-1 hoverable waves-effect waves-ripple" @click="refreshPrice"
+            <div class="chip green lighten-1 z-depth-1 hoverable waves-effect waves-ripple" @click="refreshPrice"
                  style="cursor: pointer">Beli: {{price.buy|fmtNumber}}
             </div>
         </div>
         <div class="col s6">
-            <div class="chip red z-depth-1 hoverable waves-effect waves-ripple" @click="refreshPrice"
+            <div class="chip red lighten-1 z-depth-1 hoverable waves-effect waves-ripple" @click="refreshPrice"
                  style="cursor: pointer">Jual: {{price.sell|fmtNumber}}
             </div>
         </div>
@@ -135,33 +127,42 @@
     }
 
     let coinChips = [
-        {icon: 'img/btc.webp', name: 'Bitcoin', symbol: 'btc', selected: true},
+        {icon: 'img/btc.webp', name: 'Bitcoin', symbol: 'btc'},
         {icon: 'img/eth.webp', name: 'Ethereum', symbol: 'eth'},
         {icon: 'img/bnb.webp', name: 'Binance Coin', symbol: 'bnb'},
         {icon: 'img/link.webp', name: 'Chainlink', symbol: 'link'},
         {icon: 'img/snx.webp', name: 'Synthetix', symbol: 'snx'},
         {icon: 'img/comp.webp', name: 'Compound', symbol: 'comp'},
+        {icon: 'img/usdt.webp', name: 'Tether', symbol: 'usdt'},
     ]
     new Vue({
         el: '#app',
         data: {
             coinChips,
-            coin: '',
-            selectedChip: coinChips[0],
-            price: initPrice()
+            selectedChip: null,
+            price: initPrice(),
+            modal: null
         },
         mounted() {
+            let coin = localStorage.getItem('coin');
+            if (coin) {
+                let chip = this.coinChips.find(it => it.symbol === coin);
+                this.pick(chip);
+                this.priceHour(coin);
+            } else {
+                this.pick(this.coinChips[0]);
+                this.priceHour('btc');
+            }
+
             this.modal = M.Modal.init(document.querySelector('.modal'));
-            this.loadData('btc');
         },
-        computed: {},
         methods: {
             pick(chip) {
                 if (this.selectedChip) {
                     this.$set(this.selectedChip, 'selected', false);
-                    this.price = initPrice();
                 }
 
+                localStorage.setItem('coin', chip.symbol);
                 this.$set(chip, 'selected', true);
                 this.selectedChip = chip;
 
@@ -176,17 +177,19 @@
             loadData(symbol) {
                 let data = localStorage.getItem(symbol);
                 if (data) {
-                    this.price = Object.assign(this.price, JSON.parse(data));
+                    this.price = Object.assign(initPrice(), JSON.parse(data));
+                } else {
+                    this.price = initPrice();
                 }
             },
             selectedColor(chip) {
                 if (chip.selected) return 'green lighten-1';
                 return '';
             },
-            trendingColor(dir) {
-                if (dir > 0) {
+            trendingColor(change) {
+                if (change > 0) {
                     return 'green-text';
-                } else if (dir < 0) {
+                } else if (change < 0) {
                     return 'red-text';
                 } else return '';
             },
@@ -209,33 +212,30 @@
                 });
             },
             async priceHour(symbol) {
-                let now = await fetchRate(symbol);
-                let latestPrice = now.close;
-                let block = now.block - 3600;
-                let rateAgo = await fetchRate(symbol, block);
-                let price = rateAgo.close;
                 // perubahan dalam persen
-                let change = calcPriceChange(latestPrice, price);
-                let dir = change > 0 ? 1 : -1;
+                let now = await fetchRate(symbol);
+                let hourAgo = await fetchRate(symbol, now.block - 3600);
+                let change = calcPriceChange(now.close, hourAgo.close);
+                // harga tinggi dan rendah
+                let chart = await fetchChart(symbol, 'hour');
+                let hl = getHighLow(chart);
 
                 this.$set(this.price.hour, 'change', change);
-                this.$set(this.price.hour, 'dir', dir);
+                this.$set(this.price.hour, 'high', hl.high);
+                this.$set(this.price.hour, 'low', hl.low);
+
                 this.saveCoin(symbol);
             },
             async priceDay(symbol) {
-                let chart = await fetchChart(symbol, 'day');
-                let block = chart[0].block - 86400;
-                let result = await fetchRate(symbol, block);
-                let price = result.close;
                 // perubahan dalam persen
-                let latestPrice = chart[0].close;
-                let change = calcPriceChange(latestPrice, price);
-                let dir = change > 0 ? 1 : -1;
+                let now = await fetchRate(symbol);
+                let dayAgo = await fetchRate(symbol, now.block - 86400);
+                let change = calcPriceChange(now.close, dayAgo.close);
                 // harga tinggi dan rendah
+                let chart = await fetchChart(symbol, 'day');
                 let hl = getHighLow(chart);
 
                 this.$set(this.price.day, 'change', change);
-                this.$set(this.price.day, 'dir', dir);
                 this.$set(this.price.day, 'high', hl.high);
                 this.$set(this.price.day, 'low', hl.low);
 
@@ -248,16 +248,15 @@
              * @returns {Promise<void>}
              */
             async priceTimelapse(symbol, time) {
+                // perubahan dalam persen
                 let chart = await fetchChart(symbol, time);
                 let latestPrice = chart[0].close;
                 let timePrice = chart[chart.length - 1].close;
                 let change = calcPriceChange(latestPrice, timePrice);
-                let dir = change > 0 ? 1 : -1;
                 // harga tinggi dan rendah
                 let hl = getHighLow(chart);
 
                 this.$set(this.price[time], 'change', change);
-                this.$set(this.price[time], 'dir', dir);
                 this.$set(this.price[time], 'high', hl.high);
                 this.$set(this.price[time], 'low', hl.low);
                 this.saveCoin(symbol);
