@@ -80,6 +80,7 @@
     <!-- kontak -->
     <div class="row center">
         <a href="pintu.html" class="btn btn-floating green lighten-1"><i class="material-icons">laptop</i></a>
+        <a href="#" class="btn btn-floating green lighten-1" @click.prevent="darkMode"><i class="material-icons">brightness_4</i></a>
         <br>
         <div class="chip hoverable z-depth-1 waves-effect waves-ripple" @click="contact" style="cursor: pointer">
             <img src="img/favicon.png" alt="jajanjawa">@jajanjawa
@@ -154,8 +155,24 @@
 
             this.modal = M.Modal.init(document.querySelector('.modal'));
             setInterval(this.refreshPrice, 60000);
+            let dark = localStorage.getItem('dark');
+            if (dark === 'true') {
+                let body = document.getElementsByTagName('body')[0];
+                body.classList.add('grey', 'darken-1');
+            }
         },
         methods: {
+            darkMode() {
+                let body = document.getElementsByTagName('body')[0];
+                let clazz = body.classList;
+                if (clazz.contains('grey')) {
+                    clazz.remove('grey', 'darken-1');
+                    localStorage.removeItem('dark');
+                } else {
+                    clazz.add('grey', 'darken-1');
+                    localStorage.setItem('dark', 'true');
+                }
+            },
             pick(chip) {
                 if (this.selectedChip) {
                     this.$set(this.selectedChip, 'selected', false);

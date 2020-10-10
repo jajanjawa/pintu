@@ -86,6 +86,9 @@
 
     <!-- kontak -->
     <div class="row center">
+        <a href="index.html" class="btn btn-floating green lighten-1"><i class="material-icons">smartphone</i></a>
+        <a href="#" class="btn btn-floating green lighten-1" @click.prevent="darkMode"><i class="material-icons">brightness_4</i></a>
+        <br>
         <div class="chip hoverable z-depth-1 waves-effect waves-ripple" @click="contact" style="cursor: pointer">
             <img src="img/favicon.png" alt="jajanjawa">@jajanjawa
         </div>
@@ -93,10 +96,6 @@
         <div class="chip hoverable z-depth-1 waves-effect waves-ripple" @click="invite" style="cursor: pointer">
             <img src="img/favicon.png" alt="Undangan">Kode Undangan: EXPLO190
         </div>
-    </div>
-
-    <div class="fixed-action-btn">
-        <a href="index.html" class="btn btn-large btn-floating green lighten-1"><i class="material-icons">smartphone</i></a>
     </div>
 
 </div>
@@ -118,6 +117,7 @@
             buy: 0, sell: 0, hour: {}, day: {}, week: {}, month: {}, year: {}
         };
     }
+
     let coins = [
         {icon: 'img/btc.webp', name: 'Bitcoin', symbol: 'btc'},
         {icon: 'img/eth.webp', name: 'Ethereum', symbol: 'eth'},
@@ -147,8 +147,25 @@
             }
             this.refreshAllPrices();
             setInterval(this.refreshAllPrices, 60000);
+
+            let dark = localStorage.getItem('dark');
+            if (dark === 'true') {
+                let body = document.getElementsByTagName('body')[0];
+                body.classList.add('grey', 'darken-1');
+            }
         },
         methods: {
+            darkMode() {
+                let body = document.getElementsByTagName('body')[0];
+                let clazz = body.classList;
+                if (clazz.contains('grey')) {
+                    clazz.remove('grey', 'darken-1');
+                    localStorage.removeItem('dark');
+                } else {
+                    clazz.add('grey', 'darken-1');
+                    localStorage.setItem('dark', 'true');
+                }
+            },
             refreshAllPrices() {
                 for (const coin of coins) {
                     this.refreshPrice(coin.symbol);
