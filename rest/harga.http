@@ -1,0 +1,20 @@
+@server=https://api.pintu.co.id
+@server2=https://api.pintukripto.com
+
+@symbol=bnb
+
+# lihat harga terbaru
+# kueri: block
+GET {{server}}/v1/trade/exchange-rate/{{symbol}}
+
+###
+
+# lihat harga beli
+GET {{server2}}/v1/trade/price/buy/{{symbol}}
+
+###
+
+# lihat harga jual
+GET {{server2}}/v1/trade/price/sell/{{symbol}}
+
+###
