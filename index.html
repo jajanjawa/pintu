@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title>Pintu</title>
+    <title>Pintu - Investasi Bitcoin dan Crypto. Mudah. Praktis. Instan.</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="css/materials-icon.css" rel="stylesheet">
@@ -83,9 +83,12 @@
     </div>
 
     <div class="row center">
-        <a href="pintu.html" class="btn btn-floating green lighten-1"><i class="material-icons">laptop</i></a>
-        <a href="#" class="btn btn-floating green lighten-1" @click.prevent="darkMode"><i class="material-icons">brightness_4</i></a>
-        <a href="berita.html" class="btn btn-floating green lighten-1"><i class="material-icons">event</i></a>
+        <a href="pintu.html" class="btn btn-floating green lighten-1 waves-effect waves-ripple"><i
+                class="material-icons">laptop</i></a>
+        <a href="#" class="btn btn-floating green lighten-1 waves-effect waves-ripple"
+           @click.prevent="darkMode"><i class="material-icons">brightness_4</i></a>
+        <a href="berita.html" class="btn btn-floating green lighten-1 waves-effect waves-ripple"><i
+                class="material-icons">event</i></a>
     </div>
     <!-- kontak -->
     <div class="row center">
@@ -97,7 +100,7 @@
             <img src="img/favicon.png" alt="Undangan">Kode Undangan: EXPLO190
         </div>
         <br>
-        <div class="chip hoverable z-depth-1 waves-effect waves-ripple" style="cursor: pointer" @click="openApp">
+        <div class="chip hoverable z-depth-1 waves-effect waves-ripple" style="cursor: pointer" @click="modal.open()">
             <img src="img/favicon.png" alt="Pintu">Buka Pintu
         </div>
     </div>
@@ -160,7 +163,7 @@
                 this.priceHour('btc');
             }
 
-            this.modal = M.Modal.init(document.querySelector('.modal'));
+            this.modal = M.Modal.init(document.querySelector('#confirm.modal'));
             setInterval(this.refreshPrice, 60000);
             let dark = localStorage.getItem('dark');
             if (dark === 'true') {
@@ -223,9 +226,6 @@
             invite() {
                 copyText('EXPLO190');
                 M.toast({html: 'kode undangan disalin', displayLength: 1700});
-            },
-            openApp() {
-                this.modal.open();
             },
             refreshPrice() {
                 fetchPrice(this.selectedChip.symbol).then(price => {

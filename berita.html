@@ -48,7 +48,7 @@
         <div class="col s3">
             <div class="input-field">
                 <input id="page" type="number" min="1" :value="page" @input="page = $event.target.value">
-                <label for="page">Halaman</label>
+                <label for="page" class="active">Halaman</label>
             </div>
         </div>
         <div class="col s3">
@@ -60,7 +60,6 @@
             <a class="btn waves-effect waves-ripple green lighten-1" @click="openPage(page+1)"><i
                     class="material-icons">chevron_right</i></a>
         </div>
-
     </div>
 </div>
 <script src="js/materialize.min.js"></script>
