@@ -2,6 +2,7 @@
 @server2=https://api.pintukripto.com
 
 @symbol=bnb
+@interval=day
 
 # lihat harga terbaru
 # kueri: block
@@ -16,5 +17,11 @@ GET {{server2}}/v1/trade/price/buy/{{symbol}}
 
 # lihat harga jual
 GET {{server2}}/v1/trade/price/sell/{{symbol}}
+
+###
+
+# harga chart
+# kueri: hour,day,week,month,year,all
+GET {{server}}/v1/trade/chart/{{symbol}}?interval={{interval}}
 
 ###

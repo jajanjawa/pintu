@@ -22,19 +22,24 @@
 
     <div class="row center">
         <!-- trending -->
-        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer" @click="priceHour(selectedChip.symbol)">
+        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer"
+             @click="priceHour(selectedChip.symbol)">
             Jam: <span :class="trendingColor(price.hour.change)">{{price.hour.change|fmtPercent}}</span>
         </div>
-        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer" @click="priceDay(selectedChip.symbol)">
+        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer"
+             @click="priceDay(selectedChip.symbol)">
             Hari: <span :class="trendingColor(price.day.change)">{{price.day.change|fmtPercent}}</span>
         </div>
-        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer" @click="priceTimelapse(selectedChip.symbol, 'week')">
+        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer"
+             @click="priceTimelapse(selectedChip.symbol, 'week')">
             Minggu: <span :class="trendingColor(price.week.change)">{{price.week.change|fmtPercent}}</span>
         </div>
-        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer" @click="priceTimelapse(selectedChip.symbol, 'month')">
+        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer"
+             @click="priceTimelapse(selectedChip.symbol, 'month')">
             Bulan: <span :class="trendingColor(price.month.change)">{{price.month.change|fmtPercent}}</span>
         </div>
-        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer" @click="priceTimelapse(selectedChip.symbol, 'year')">
+        <div class="chip z-depth-1 hoverable waves-effect waves-ripple" style="cursor: pointer"
+             @click="priceTimelapse(selectedChip.symbol, 'year')">
             Tahun: <span :class="trendingColor(price.year.change)">{{price.year.change|fmtPercent}}</span>
         </div>
 
@@ -77,11 +82,13 @@
         </div>
     </div>
 
-    <!-- kontak -->
     <div class="row center">
         <a href="pintu.html" class="btn btn-floating green lighten-1"><i class="material-icons">laptop</i></a>
         <a href="#" class="btn btn-floating green lighten-1" @click.prevent="darkMode"><i class="material-icons">brightness_4</i></a>
-        <br>
+        <a href="berita.html" class="btn btn-floating green lighten-1"><i class="material-icons">event</i></a>
+    </div>
+    <!-- kontak -->
+    <div class="row center">
         <div class="chip hoverable z-depth-1 waves-effect waves-ripple" @click="contact" style="cursor: pointer">
             <img src="img/favicon.png" alt="jajanjawa">@jajanjawa
         </div>

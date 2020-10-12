@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Pintu - Investasi Bitcoin dan Crypto. Mudah. Praktis. Instan.</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="css/materials-icon.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
+    <link rel="icon" href="img/favicon.png">
+</head>
+<body>
+
+<div class="container" id="app">
+    <img src="img/pintu_logo_text.png" alt="Pintu" style="margin-top: 5px" class="responsive-img">
+
+    <div class="row">
+        <div v-for="it in news" :key="it.id" class="col s12">
+            <div class="card">
+                <div class="card-content row">
+                    <div class="col s4">
+                        <img v-if="it.image" :src="it.image" class="responsive-img">
+                        <img v-else :src="it.publisher.icon_url" class="responsive-img">
+                    </div>
+                    <div class="col s8">
+                        <span class="card-title">{{it.title}}</span>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <div class="row center valign-wrapper">
+                        <div class="col s6">
+                            {{it.publisher.name}}<br>
+                            {{it.updated_at|timeago}}
+                        </div>
+                        <div class="col s6">
+                            <a :href="it.url" target="_blank">Selengkapnya</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row center valign-wrapper">
+        <div class="col s3">
+            <a class="btn waves-effect waves-ripple green lighten-1" @click="openPage(page-1)"><i
+                    class="material-icons">chevron_left</i></a>
+        </div>
+        <div class="col s3">
+            <div class="input-field">
+                <input id="page" type="number" min="1" :value="page" @input="page = $event.target.value">
+                <label for="page">Halaman</label>
+            </div>
+        </div>
+        <div class="col s3">
+            <a @click="openPage(page)" class="btn waves-effect waves-ripple green lighten-1">
+                <i class="material-icons">search</i>
+            </a>
+        </div>
+        <div class="col s3">
+            <a class="btn waves-effect waves-ripple green lighten-1" @click="openPage(page+1)"><i
+                    class="material-icons">chevron_right</i></a>
+        </div>
+
+    </div>
+</div>
+<script src="js/materialize.min.js"></script>
+<script src="js/vue.min.js"></script>
+<script>
+    function ago(val) {
+        val = 0 | (Date.now() - val) / 1000;
+        let unit, result;
+        let length = {
+            detik: 60, menit: 60, jam: 24, hari: 7,
+            minggu: 4.35, bulan: 12, tahun: 10000
+        };
+        for (unit in length) {
+            result = val % length[unit];
+            if (!(val = 0 | val / length[unit])) {
+                if (unit === 'detik') return 'baru saja';
+                if (unit === 'hari' && result === 1) return 'kemarin';
+                return result + ' ' + unit + ' lalu';
+            }
+        }
+    }
+
+    new Vue({
+        el: '#app',
+        data: {
+            news: [],
+            page: 1
+        },
+        mounted() {
+            let dark = localStorage.getItem('dark');
+            if (dark === 'true') {
+                let body = document.getElementsByTagName('body')[0];
+                body.classList.add('grey', 'darken-1');
+            }
+
+            this.fetchRSS(1, 10).then(news => {
+                if (news.length > 0) {
+                    this.news = news;
+                } else {
+                    M.toast({html: 'belum bisa membaca berita', displayLength: 2000});
+                }
+            });
+        },
+        methods: {
+            async fetchRSS(page, limit) {
+                let res = await fetch(`https://api.pintu.co.id/v1/rss/articles?page=${page}&limit=${limit}`);
+                if (res.ok) {
+                    let raw = await res.json();
+                    return raw.payload.articles;
+                }
+                return [];
+            },
+            async openPage(page) {
+                if (page < 1) {
+                    page = 1;
+                }
+                let news = await this.fetchRSS(page, 10)
+                if (news.length > 0) {
+                    this.news = news;
+                    this.page = page;
+                    setTimeout(() => window.scroll({top: 0, behavior: "smooth"}), 150);
+                } else {
+                    M.toast({html: 'belum bisa membaca berita', displayLength: 2000});
+                }
+            }
+        },
+        filters: {
+            timeago(value) {
+                return ago(new Date(value * 1000));
+            }
+        }
+
+    });
+</script>
+</body>
+</html>

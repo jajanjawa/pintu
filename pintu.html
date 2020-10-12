@@ -84,17 +84,24 @@
         </div>
     </div>
 
-    <!-- kontak -->
     <div class="row center">
         <a href="index.html" class="btn btn-floating green lighten-1"><i class="material-icons">smartphone</i></a>
         <a href="#" class="btn btn-floating green lighten-1" @click.prevent="darkMode"><i class="material-icons">brightness_4</i></a>
-        <br>
+        <a href="berita.html" class="btn btn-floating green lighten-1"><i class="material-icons">event</i></a>
+    </div>
+
+    <!-- kontak -->
+    <div class="row center">
         <div class="chip hoverable z-depth-1 waves-effect waves-ripple" @click="contact" style="cursor: pointer">
             <img src="img/favicon.png" alt="jajanjawa">@jajanjawa
         </div>
         <br>
         <div class="chip hoverable z-depth-1 waves-effect waves-ripple" @click="invite" style="cursor: pointer">
             <img src="img/favicon.png" alt="Undangan">Kode Undangan: EXPLO190
+        </div>
+        <br>
+        <div class="chip hoverable z-depth-1 waves-effect waves-ripple" style="cursor: pointer" @click="openApp">
+            <img src="img/favicon.png" alt="Pintu">Buka Pintu
         </div>
     </div>
 
@@ -185,6 +192,9 @@
             invite() {
                 copyText('EXPLO190');
                 M.toast({html: 'kode undangan disalin', displayLength: 1700});
+            },
+            openApp() {
+                window.open('https://app.pintu.co.id', '_blank');
             },
             refreshPrice(symbol) {
                 fetchPrice(symbol).then(price => {

@@ -1,0 +1,9 @@
+@server=https://api.pintu.co.id
+
+# baca berita
+# kueri: page,limit,feed_id
+# latest = feed_id=-4
+# en = feed_id=-1030
+# id = feed_id=-1031
+GET {{server}}/v1/rss/articles?page=1&limit=5&feed_id=-1031
+###
