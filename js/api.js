@@ -75,6 +75,7 @@ function getHighLow(chart) {
  * @returns {number}
  */
 function calcPriceChange(newPrice, oldPrice) {
+    if (oldPrice === '0') return 0;
     let change = newPrice - oldPrice;
     return (change / oldPrice) * 100;
 }
