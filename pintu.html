@@ -11,10 +11,10 @@
 <body>
 
 <div class="container" id="app">
-    <img src="img/pintu_logo_text.png" alt="Pintu" style="margin-top: 5px" class="responsive-img">
+    <img src="img/pintu_logo_text.png" alt="Pintu" style="margin-top: 5px" class="responsive-img center">
 
-    <div class="row">
-        <div v-for="(it,index) in coins" :key="index" class="col s12 l6 xl4 center">
+    <div class="row center">
+        <div v-for="(it,index) in coins" :key="index" class="col s12 l6">
             <div class="chip z-depth-1">
                 <img :src="it.icon" :alt="it.name">{{it.name}}
             </div>
@@ -131,11 +131,14 @@
     let coins = [
         {icon: 'img/btc.webp', name: 'Bitcoin', symbol: 'btc'},
         {icon: 'img/eth.webp', name: 'Ethereum', symbol: 'eth'},
+        {icon: 'img/usdt.webp', name: 'Tether', symbol: 'usdt'},
         {icon: 'img/bnb.webp', name: 'Binance Coin', symbol: 'bnb'},
         {icon: 'img/link.webp', name: 'Chainlink', symbol: 'link'},
         {icon: 'img/snx.webp', name: 'Synthetix', symbol: 'snx'},
         {icon: 'img/comp.webp', name: 'Compound', symbol: 'comp'},
-        {icon: 'img/usdt.webp', name: 'Tether', symbol: 'usdt'}
+        {icon: 'img/yfi.webp', name: 'Yearn.finance', symbol: 'yfi'},
+        {icon: 'img/uni.webp', name: 'Uniswap', symbol: 'uni'},
+        {icon: 'img/mkr.webp', name: 'Maker', symbol: 'mkr'}
     ];
     let prices = {};
     for (const coin of coins) {

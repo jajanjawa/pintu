@@ -11,7 +11,7 @@
 <body>
 
 <div class="container" id="app">
-    <img src="img/pintu_logo_text.png" alt="Pintu" style="margin-top: 5px" class="responsive-img">
+    <img src="img/pintu_logo_text.png" alt="Pintu" style="margin-top: 5px" class="responsive-img center">
 
     <div class="row center">
         <div v-for="(it,index) in coinChips" :key="index" class="chip hoverable z-depth-1 waves-effect waves-ripple"
@@ -138,11 +138,14 @@
     let coinChips = [
         {icon: 'img/btc.webp', name: 'Bitcoin', symbol: 'btc'},
         {icon: 'img/eth.webp', name: 'Ethereum', symbol: 'eth'},
+        {icon: 'img/usdt.webp', name: 'Tether', symbol: 'usdt'},
         {icon: 'img/bnb.webp', name: 'Binance Coin', symbol: 'bnb'},
         {icon: 'img/link.webp', name: 'Chainlink', symbol: 'link'},
         {icon: 'img/snx.webp', name: 'Synthetix', symbol: 'snx'},
         {icon: 'img/comp.webp', name: 'Compound', symbol: 'comp'},
-        {icon: 'img/usdt.webp', name: 'Tether', symbol: 'usdt'},
+        {icon: 'img/yfi.webp', name: 'Yearn.finance', symbol: 'yfi'},
+        {icon: 'img/uni.webp', name: 'Uniswap', symbol: 'uni'},
+        {icon: 'img/mkr.webp', name: 'Maker', symbol: 'mkr'}
     ]
     new Vue({
         el: '#app',
