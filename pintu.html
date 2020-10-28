@@ -15,7 +15,7 @@
 
     <div class="row center">
         <div v-for="(it,index) in coins" :key="index" class="col s12 l6">
-            <div class="chip z-depth-1">
+            <div class="chip z-depth-1 hoverable" style="cursor: pointer" @click="openGecko(it.gecko)">
                 <img :src="it.icon" :alt="it.name">{{it.name}}
             </div>
             <br>
@@ -129,16 +129,16 @@
     }
 
     let coins = [
-        {icon: 'img/btc.webp', name: 'Bitcoin', symbol: 'btc'},
-        {icon: 'img/eth.webp', name: 'Ethereum', symbol: 'eth'},
-        {icon: 'img/usdt.webp', name: 'Tether', symbol: 'usdt'},
-        {icon: 'img/bnb.webp', name: 'Binance Coin', symbol: 'bnb'},
-        {icon: 'img/link.webp', name: 'Chainlink', symbol: 'link'},
-        {icon: 'img/snx.webp', name: 'Synthetix', symbol: 'snx'},
-        {icon: 'img/comp.webp', name: 'Compound', symbol: 'comp'},
-        {icon: 'img/yfi.webp', name: 'Yearn.finance', symbol: 'yfi'},
-        {icon: 'img/uni.webp', name: 'Uniswap', symbol: 'uni'},
-        {icon: 'img/mkr.webp', name: 'Maker', symbol: 'mkr'}
+        {icon: 'img/btc.webp', name: 'Bitcoin', symbol: 'btc', gecko: '/bitcoin'},
+        {icon: 'img/eth.webp', name: 'Ethereum', symbol: 'eth', gecko: '/ethereum'},
+        {icon: 'img/usdt.webp', name: 'Tether', symbol: 'usdt', gecko: '/tether'},
+        {icon: 'img/bnb.webp', name: 'Binance Coin', symbol: 'bnb', gecko: '/binance-coin'},
+        {icon: 'img/link.webp', name: 'Chainlink', symbol: 'link', gecko: '/chainlink'},
+        {icon: 'img/snx.webp', name: 'Synthetix', symbol: 'snx', gecko: '/synthetix-network-token'},
+        {icon: 'img/comp.webp', name: 'Compound', symbol: 'comp', gecko: '/compound'},
+        {icon: 'img/yfi.webp', name: 'Yearn.finance', symbol: 'yfi', gecko: '/yearn-finance'},
+        {icon: 'img/uni.webp', name: 'Uniswap', symbol: 'uni', gecko: '/uniswap'},
+        {icon: 'img/mkr.webp', name: 'Maker', symbol: 'mkr', gecko: '/maker'}
     ];
     let prices = {};
     for (const coin of coins) {
@@ -261,6 +261,9 @@
             },
             saveCoin(symbol) {
                 localStorage.setItem(symbol, JSON.stringify(this.prices[symbol]));
+            },
+            openGecko(symbol) {
+                window.open(`https://www.coingecko.com/id/koin_koin/${symbol}`, '_blank');
             }
         },
         filters: {
