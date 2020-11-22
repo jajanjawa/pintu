@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Pintu - Investasi Bitcoin dan Crypto. Mudah. Praktis. Instan.</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="css/materials-icon.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
+    <link rel="icon" href="img/favicon.png">
+</head>
+<body>
+
+<div class="container" id="app">
+    <img src="img/pintu_logo_text.png" alt="Pintu" style="margin-top: 5px" class="responsive-img center">
+
+    <div class="row center">
+        <div v-for="(it,idx) in prices" :key="it.time" class="card hoverable col s12 l6">
+            <div class="card-content ">
+                <table class="striped centered">
+                    <tbody>
+                    <tr v-for="coin in coinChips">
+                        <td>
+                            <div class="chip z-depth-1">
+                                <img :src="it[coin.symbol].icon">{{it[coin.symbol].name}}
+                            </div>
+                        </td>
+                        <td class="green-text">{{it[coin.symbol].buy.toLocaleString()}}</td>
+                        <td class="red-text">{{it[coin.symbol].sell.toLocaleString()}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-action right-align">
+                {{it.timeago}}
+                <button class="btn-flat waves-effect" @click="deleteRow(idx)"><i
+                        class="material-icons red-text">delete</i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed-action-btn">
+        <div class="btn-floating btn-large green waves-effect" @click="fetchAll"><i class="material-icons">refresh</i>
+        </div>
+    </div>
+</div>
+
+<script src="js/materialize.min.js"></script>
+<script src="js/vue.min.js"></script>
+<script src="js/api.js"></script>
+<script>
+    let coinChips = [
+        {icon: 'img/btc.webp', name: 'Bitcoin', symbol: 'btc'},
+        {icon: 'img/eth.webp', name: 'Ethereum', symbol: 'eth'},
+        {icon: 'img/bnb.webp', name: 'Binance Coin', symbol: 'bnb'},
+        {icon: 'img/link.webp', name: 'Chainlink', symbol: 'link'},
+        {icon: 'img/snx.webp', name: 'Synthetix', symbol: 'snx'},
+        {icon: 'img/comp.webp', name: 'Compound', symbol: 'comp'},
+        {icon: 'img/yfi.webp', name: 'Yearn.finance', symbol: 'yfi'},
+        {icon: 'img/uni.webp', name: 'Uniswap', symbol: 'uni'},
+        {icon: 'img/mkr.webp', name: 'Maker', symbol: 'mkr'}
+    ];
+
+    function ago(val) {
+        val = 0 | (Date.now() - val) / 1000;
+        let unit, result;
+        let length = {
+            detik: 60, menit: 60, jam: 24, hari: 7,
+            minggu: 4.35, bulan: 12, tahun: 10000
+        };
+        for (unit in length) {
+            result = val % length[unit];
+            if (!(val = 0 | val / length[unit])) {
+                if (unit === 'detik') return 'baru saja';
+                return result + ' ' + unit + ' lalu';
+            }
+        }
+    }
+
+
+    new Vue({
+        el: '#app',
+        data: {
+            prices: []
+        },
+        mounted() {
+            setInterval(this.refreshTime, 60000); // 1 menit
+            setInterval(this.fetchAll, 300000); // 5 menit
+
+            this.fetchAll();
+            let dark = localStorage.getItem('dark');
+            if (dark === 'true') {
+                let body = document.getElementsByTagName('body')[0];
+                body.classList.add('grey', 'darken-1');
+            }
+        },
+        methods: {
+            refreshTime() {
+                for (let price of this.prices) {
+                    price.timeago = ago(price.time);
+                }
+            },
+            fetchAll() {
+                let task = [];
+                for (let it of coinChips) {
+                    task.push(fetchPrice(it.symbol));
+                }
+                Promise.all(task).then(res => {
+                    let box = {
+                        time: Date.now(),
+                        timeago: 'baru saja'
+                    };
+                    for (let i = 0; i < res.length; i++) {
+                        let coin = coinChips[i];
+                        box[coin.symbol] = Object.assign({}, coin, res[i]);
+                    }
+                    this.prices.unshift(box);
+                });
+            },
+            deleteRow(index) {
+                this.prices.splice(index, 1);
+            }
+        }
+    });
+</script>
+</body>
+</html>
