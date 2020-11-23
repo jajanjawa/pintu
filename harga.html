@@ -30,7 +30,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-action right-align">
+            <div class="card-action">
                 {{it.timeago}}
                 <button class="btn-flat waves-effect" @click="deleteRow(idx)"><i
                         class="material-icons red-text">delete</i></button>
@@ -87,6 +87,7 @@
             setInterval(this.fetchAll, 300000); // 5 menit
 
             this.fetchAll();
+            this.refreshTime();
             let dark = localStorage.getItem('dark');
             if (dark === 'true') {
                 let body = document.getElementsByTagName('body')[0];
@@ -94,6 +95,18 @@
             }
         },
         methods: {
+            darkMode() {
+                let dark = localStorage.getItem('dark');
+                if (dark === 'true') {
+                    let card = document.getElementsByClassName('card');
+                    for (let i = 0; i < card.length; i++) {
+                        let list = card[i].classList;
+                        if (!list.contains('grey')) {
+                            list.add('grey', 'darken-1');
+                        }
+                    }
+                }
+            },
             refreshTime() {
                 for (let price of this.prices) {
                     price.timeago = ago(price.time);
@@ -114,6 +127,7 @@
                         box[coin.symbol] = Object.assign({}, coin, res[i]);
                     }
                     this.prices.unshift(box);
+                    setTimeout(this.darkMode, 100);
                 });
             },
             deleteRow(index) {
