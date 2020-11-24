@@ -16,7 +16,7 @@
     <div class="row center">
         <div v-for="(it,index) in coins" :key="index" class="col s12 l6">
             <div class="chip z-depth-1 hoverable" style="cursor: pointer" @click="openGecko(it.gecko)">
-                <img :src="it.icon" :alt="it.name">{{it.name}}
+                <img :src="it.icon" :alt="it.name">{{it.name}} {{prices[it.symbol].rate|fmtNumber}}
             </div>
             <br>
             <!-- trending -->
@@ -124,7 +124,7 @@
 
     function initPrice() {
         return {
-            buy: 0, sell: 0, hour: {}, day: {}, week: {}, month: {}, year: {}
+            rate: 0, buy: 0, sell: 0, hour: {}, day: {}, week: {}, month: {}, year: {}
         };
     }
 
@@ -203,7 +203,10 @@
                 window.open('https://app.pintu.co.id', '_blank');
             },
             refreshPrice(symbol) {
-                fetchPrice(symbol).then(price => {
+                Promise.all([fetchRate(symbol), fetchPrice(symbol)]).then(res => {
+                    let rate = res[0];
+                    this.$set(this.prices[symbol], 'rate', rate.close);
+                    let price = res[1];
                     this.$set(this.prices[symbol], 'buy', price.buy);
                     this.$set(this.prices[symbol], 'sell', price.sell);
                     this.saveCoin(symbol);
