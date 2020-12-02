@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Pintu - Kalkulator</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="css/materials-icon.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
+    <link rel="icon" href="img/favicon.png">
+</head>
+<body>
+
+<div class="container" id="app">
+    <img src="img/pintu_logo_text.png" alt="Pintu" style="margin-top: 5px" class="responsive-img center">
+    <h4 class="center">Kalkulator Pendapatan</h4>
+    <div class="row">
+        <div class="input-field">
+            <select @change="onAsset">
+                <option value="" disabled selected>Silakan Pilih</option>
+                <option v-for="it in coinChips" :data-icon="it.icon" class="left" :value="it.symbol">{{it.name}}
+                </option>
+            </select>
+            <label>Assets</label>
+        </div>
+        <div class="input-field">
+            <input id="buy" type="number" required
+                   class="validate" v-model="buy">
+            <label for="buy">Harga Beli</label>
+        </div>
+        <div class="input-field">
+            <input id="sell" type="number" required
+                   class="validate" v-model="sell">
+            <label for="sell">Harga Jual</label>
+        </div>
+        <div class="row valign-wrapper">
+            <div class="input-field col s6">
+                <input id="total" type="number" required
+                       class="validate" min="22000" step="1000"
+                       v-model="total">
+                <label for="total">Pembelian Dalam Rupiah</label>
+                <span>{{total|terbilang}}</span>
+            </div>
+            <button class="btn waves-effect col s3" @click="total = addZero(total, 2)">00</button>
+            <button class="btn waves-effect col s3" @click="total = addZero(total, 3)">000</button>
+        </div>
+    </div>
+
+    <div class="row center">
+        <div class="card-panel">
+            <h5>{{income|fmtNumber}}</h5><br>
+            <h5>{{income|terbilang}}</h5>
+        </div>
+    </div>
+
+    <!-- kontak -->
+    <div class="row center">
+        <div class="chip hoverable z-depth-1 waves-effect waves-ripple" @click="contact" style="cursor: pointer">
+            <img src="img/favicon.png" alt="jajanjawa">@jajanjawa
+        </div>
+        <br>
+        <div class="chip hoverable z-depth-1 waves-effect waves-ripple" @click="invite" style="cursor: pointer">
+            <img src="img/favicon.png" alt="Undangan">Kode Undangan: EXPLO190
+        </div>
+        <br>
+        <div class="chip hoverable z-depth-1 waves-effect waves-ripple" style="cursor: pointer" @click="openApp">
+            <img src="img/favicon.png" alt="Pintu">Buka Pintu
+        </div>
+    </div>
+
+    <div class="fixed-action-btn" title="Segarkan Harga">
+        <div class="btn-floating btn-large green waves-effect" @click="refresh">
+            <img src="img/favicon.png" alt="Segarkan" class="responsive-img">
+        </div>
+    </div>
+</div>
+
+<script src="js/materialize.min.js"></script>
+<script src="js/vue.min.js"></script>
+<script src="js/terbilang-vue.min.js"></script>
+<script src="js/api.js"></script>
+<script>
+    function copyText(text) {
+        let textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        textArea.remove();
+    }
+
+    let coinChips = [
+        {icon: 'img/btc.webp', name: 'Bitcoin', symbol: 'btc'},
+        {icon: 'img/eth.webp', name: 'Ethereum', symbol: 'eth'},
+        {icon: 'img/bnb.webp', name: 'Binance Coin', symbol: 'bnb'},
+        {icon: 'img/link.webp', name: 'Chainlink', symbol: 'link'},
+        {icon: 'img/snx.webp', name: 'Synthetix', symbol: 'snx'},
+        {icon: 'img/comp.webp', name: 'Compound', symbol: 'comp'},
+        {icon: 'img/yfi.webp', name: 'Yearn.finance', symbol: 'yfi'},
+        {icon: 'img/uni.webp', name: 'Uniswap', symbol: 'uni'},
+        {icon: 'img/mkr.webp', name: 'Maker', symbol: 'mkr'}
+    ];
+
+    new Vue({
+        el: '#app',
+        data: {
+            buy: 0,
+            sell: 0,
+            total: 1,
+            symbol: 'btc',
+            coin: null,
+            income: 0
+        },
+        mounted() {
+            M.FormSelect.init(document.querySelectorAll('select'));
+
+            let dark = localStorage.getItem('dark');
+            if (dark === 'true') {
+                let body = document.getElementsByTagName('body')[0];
+                body.classList.add('grey', 'darken-1');
+            }
+        },
+        watch: {
+            total() {
+                setTimeout(this.calculate, 1700);
+            },
+            buy() {
+                setTimeout(this.calculate, 1700);
+            },
+            sell() {
+                setTimeout(this.calculate, 1700);
+            }
+        },
+        methods: {
+            addZero(value, length) {
+                let zero = "";
+                for (let i = 0; i < length; i++) {
+                    zero += "0";
+                }
+                return value + zero;
+            },
+            onAsset(ev) {
+                this.symbol = ev.target.value;
+                let data = localStorage.getItem(this.symbol);
+                if (data) {
+                    data = JSON.parse(data);
+                    this.coin = data;
+                    this.buy = data.buy;
+                    this.sell = data.sell;
+                } else {
+                    this.fetchLatestPrice(this.symbol);
+                }
+            },
+            calculate() {
+                let asset = this.total / this.buy;
+                this.income = Math.round(asset * this.sell);
+            },
+            fetchLatestPrice(symbol) {
+               fetchPrice(symbol).then(price => {
+                    this.buy = price.buy;
+                    this.sell = price.sell;
+
+                    this.coin.buy = price.buy;
+                    this.coin.sell = price.sell;
+                    localStorage.setItem(symbol, JSON.stringify(this.coin));
+                });
+            },
+            refresh() {
+                this.fetchLatestPrice(this.symbol);
+            },
+            contact() {
+                copyText('@jajanjawa');
+                M.toast({html: 'username disalin', displayLength: 1700});
+            },
+            invite() {
+                copyText('EXPLO190');
+                M.toast({html: 'kode undangan disalin', displayLength: 1700});
+            },
+            openApp() {
+                window.open('https://app.pintu.co.id', '_blank');
+            }
+        },
+        filters: {
+            fmtNumber(value) {
+                if (value === undefined) return '0';
+                if (typeof value === "string") {
+                    value = parseInt(value);
+                }
+                return value.toLocaleString();
+            }
+        }
+    });
+</script>
+</body>
+</html>
