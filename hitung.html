@@ -23,13 +23,13 @@
             <label>Assets</label>
         </div>
         <div class="input-field">
-            <input id="buy" type="number" required
-                   class="validate" v-model="buy">
+            <input id="buy" type="number" required class="validate"
+                   min="0" v-model="buy">
             <label for="buy">Harga Beli</label>
         </div>
         <div class="input-field">
-            <input id="sell" type="number" required
-                   class="validate" v-model="sell">
+            <input id="sell" type="number" required class="validate"
+                   min="0" v-model="sell">
             <label for="sell">Harga Jual</label>
         </div>
         <div class="row valign-wrapper">
@@ -38,10 +38,10 @@
                        class="validate" min="22000" step="1000"
                        v-model="total">
                 <label for="total">Pembelian Dalam Rupiah</label>
-                <span>{{total|terbilang}}</span>
+                <span v-if="total > 0">{{total|terbilang}}</span>
             </div>
-            <button class="btn waves-effect col s3" @click="total = addZero(total, 2)">00</button>
-            <button class="btn waves-effect col s3" @click="total = addZero(total, 3)">000</button>
+            <button class="btn waves-effect green col s3" @click="total = addZero(total, 2)">00</button>
+            <button class="btn waves-effect green col s3" @click="total = addZero(total, 3)">000</button>
         </div>
     </div>
 
@@ -117,17 +117,19 @@
             if (dark === 'true') {
                 let body = document.getElementsByTagName('body')[0];
                 body.classList.add('grey', 'darken-1');
+                let card = document.getElementsByClassName('card-panel')[0];
+                card.classList.add('grey', 'darken-1');
             }
         },
         watch: {
             total() {
-                setTimeout(this.calculate, 1700);
+                this.calculate();
             },
             buy() {
-                setTimeout(this.calculate, 1700);
+                this.calculate();
             },
             sell() {
-                setTimeout(this.calculate, 1700);
+                this.calculate();
             }
         },
         methods: {
@@ -147,15 +149,20 @@
                     this.buy = data.buy;
                     this.sell = data.sell;
                 } else {
+                    this.coin = {};
                     this.fetchLatestPrice(this.symbol);
                 }
             },
             calculate() {
-                let asset = this.total / this.buy;
-                this.income = Math.round(asset * this.sell);
+                if (this.buy <= 0 || this.sell <= 0) {
+                    this.income = this.total;
+                } else {
+                    let asset = this.total / this.buy;
+                    this.income = Math.round(asset * this.sell);
+                }
             },
             fetchLatestPrice(symbol) {
-               fetchPrice(symbol).then(price => {
+                return fetchPrice(symbol).then(price => {
                     this.buy = price.buy;
                     this.sell = price.sell;
 
@@ -165,7 +172,9 @@
                 });
             },
             refresh() {
-                this.fetchLatestPrice(this.symbol);
+                this.fetchLatestPrice(this.symbol).then(() => {
+                    M.toast({html: 'harga diperbarui', displayLength: 2000});
+                });
             },
             contact() {
                 copyText('@jajanjawa');
