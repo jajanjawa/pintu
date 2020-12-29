@@ -14,7 +14,7 @@
     <img src="img/pintu_logo_text.png" alt="Pintu" style="margin-top: 5px" class="responsive-img center">
 
     <div class="row center">
-        <table class="striped centered">
+        <table class="striped centered responsive-table">
             <thead>
             <tr>
                 <th>Asset</th>
@@ -188,7 +188,9 @@
                 }
             }
             this.refreshAllPrices();
-            setInterval(this.refreshAllPrices, 60000);
+            this.refreshHours();
+            setInterval(this.refreshAllPrices, 60000); // 1 menit
+            setInterval(this.refreshHours, 180000); // 3 menit
 
             M.Modal.init(document.querySelectorAll('.modal'));
             this.modal = M.Modal.getInstance(document.getElementById('asset-history'));
@@ -215,6 +217,9 @@
                 for (const coin of coins) {
                     this.refreshPrice(coin.symbol);
                 }
+            },
+            refreshHours() {
+                this.coins.forEach(it => this.priceHour(it.symbol));
             },
             trendingColor(change) {
                 if (change > 0) {
