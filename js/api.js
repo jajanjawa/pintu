@@ -27,7 +27,7 @@ async function fetchPrice(symbol) {
  * @returns {Promise<{block: number, close: number}>}
  */
 async function fetchRate(symbol, block) {
-    let server = `https://api.pintu.co.id/v1/trade/exchange-rate/${symbol}`;
+    let server = `https://api.pintukripto.com/v1/trade/exchange-rate/${symbol}`;
     if (block) {
         server += `?block=${block}`;
     }
@@ -44,7 +44,7 @@ async function fetchRate(symbol, block) {
 }
 
 async function fetchChart(symbol, interval) {
-    let server = `https://api.pintu.co.id/v1/trade/chart/${symbol}?interval=${interval}`;
+    let server = `https://api.pintukripto.com/v1/trade/chart/${symbol}?interval=${interval}`;
     let res = await fetch(server, {cache: "no-cache"});
     if (res.ok) {
         res = await res.json();
