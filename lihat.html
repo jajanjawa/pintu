@@ -170,7 +170,9 @@
         {icon: 'img/sushi.webp', name: 'SushiSwap', symbol: 'sushi'},
         {icon: 'img/grt.webp', name: 'The Graph', symbol: 'grt'},
         {icon: 'img/ren.webp', name: 'REN', symbol: 'ren'},
-        {icon: 'img/bal.webp', name: 'Balancer', symbol: 'bal'}
+        {icon: 'img/bal.webp', name: 'Balancer', symbol: 'bal'},
+        {icon: 'img/crv.webp', name: 'Curve Finance', symbol: 'crv'},
+        {icon: 'img/matic.webp', name: 'Polygon', symbol: 'matic'}
     ];
     let prices = {};
     for (const coin of coins) {
@@ -306,9 +308,6 @@
             },
             saveCoin(symbol) {
                 localStorage.setItem(symbol, JSON.stringify(this.prices[symbol]));
-            },
-            openWeb(symbol) {
-                window.open(`https://app.pintu.co.id/market/detail/${symbol.toUpperCase()}`, '_blank');
             },
             openHistory(asset) {
                 this.asset = asset;
